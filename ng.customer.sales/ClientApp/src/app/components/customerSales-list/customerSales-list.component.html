@@ -1,0 +1,78 @@
+<div class="list row">
+  <div class="col-md-8">
+    <div class="input-group mb-3">
+      <input type="text"
+             class="form-control"
+             placeholder="Search by filter eg. Qty le 35, Currency eq isk"
+             [(ngModel)]="title" />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary"
+                type="button"
+                (click)="retrieveCustomerSales()">
+          Search
+        </button>
+      </div> 
+    </div>
+    
+  </div>
+  
+   
+    <div class="col-md-8">
+
+      <div  class="float-left">
+        <pagination-controls previousLabel="Prev"
+                             nextLabel="Next"
+                             responsive="true"
+                             (pageChange)="handlePageChange($event)"></pagination-controls>
+      </div>
+      <div class="float-right">
+        Items per Page:
+        <select (change)="handlePageSizeChange($event)">
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <h4 class="text-success">Customer Sales List</h4>
+      <table class="table table-striped table-responsive-md  table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#RegistrantId</th>
+            <th scope="col">SaleDate</th>
+            <th scope="col">CompanyId</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Price</th>
+            <th scope="col">Currency</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="
+          let customerSale of customerSales | paginate : {
+          itemsPerPage: pageSize,
+          currentPage: page,
+          totalItems: count
+          };
+          let i = index
+          "
+              [class.active]="i == currentIndex"
+              (click)="setActiveCustomerSale(customerSale, i)">
+
+            <td>{{ customerSale.RegistrantId }} </td>
+            <td> {{ customerSale.SaleDate }}</td>
+            <td>{{ customerSale.CompanyId }}</td>
+            <td>{{ customerSale.Qty }}</td>
+            <td>{{ customerSale.Price }}</td>
+            <td>{{ customerSale.Currency }}</td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div *ngIf="loading" class="loading"><img src="../../../assets/loadinga.gif"></div>
+
+    </div>
+
+
+  </div>
